@@ -3,13 +3,16 @@ version: 2.1
 workflows: 
   std:
     jobs:
-      - yarn1
+      - yarn
       - lint:
           requires:
-            - yarn1
+            - yarn
+      - test:
+          requires:
+            - yarn
 
 jobs:
-  yarn1:
+  yarn:
     docker:
       - image: cimg/node:14.10.1
     steps:
@@ -34,3 +37,13 @@ jobs:
 
       - run: yarn lint
       - run: yarn format:check
+
+  test:
+    docker:
+      - image: cimg/node:14.10.1
+    steps:
+      - checkout
+      - restore_cache:
+          key: npm-v1-dependencies-{{ checksum "yarn.lock" }}
+
+      - run: yarn test:ci
