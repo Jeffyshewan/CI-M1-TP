@@ -11,6 +11,6 @@ jobs:
       - run: yarn global add node-gyp && yarn install
       - npm_cache_key: npm-v1-dependencies-{{ checksum "yarn.lock" }}
     workflows: 
-    yarn-build:
+    build:
       jobs:
         - build
