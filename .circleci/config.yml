@@ -8,4 +8,5 @@ jobs:
           password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
     steps:
       - checkout # check out the code in the project directory
-      - run: echo "hello world" # run the `echo` command
+      - yarn global add node-gyp && yarn install
+      - npm-v1-dependencies-{{ checksum "yarn.lock" }}
