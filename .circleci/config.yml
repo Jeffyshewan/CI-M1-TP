@@ -10,6 +10,9 @@ workflows:
       - test:
           requires:
             - yarn
+      - e2e-test:
+          requires:
+            - yarn
 
 jobs:
   yarn:
@@ -47,3 +50,19 @@ jobs:
           key: npm-v1-dependencies-{{ checksum "yarn.lock" }}
 
       - run: yarn test:ci
+
+  e2e-test:
+    docker:
+      - image: cimg/node:14.10.1
+        environment:
+          DATABASE_URL: postgres://psqluer:psqlpassword@localhost:5432/psdb
+          JWT_SECRET: ARMA, l'eau de combat
+          API_PORT: 3000
+          API_HOST: localhost
+          API_PROTOCOL: http
+    steps:
+      - checkout
+      - restore_cache:
+          key: npm-v1-dependencies-{{ checksum "yarn.lock" }}
+
+      - run: yarn test:e2e
