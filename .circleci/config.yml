@@ -1,8 +1,11 @@
 version: 2.1
 jobs:
-  yarn1:
+  build:
     docker: 
       - image: cimg/node:14 # the primary container, where your job's commands are run
+        auth:
+          username: mydockerhub-user
+          password: $DOCKERHUB_PASSWORD
     steps:
       - checkout # check out the code in the project directory
 
