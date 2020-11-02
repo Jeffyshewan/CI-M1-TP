@@ -2,11 +2,16 @@ version: 2.1
 
 jobs:
   build:
-    docker: 
+    docker:
       - image: cimg/node:14.10.1
-        auth:
-          username: mydockerhub-user
-          password: $DOCKERHUB_PASSWORD
     steps:
       - checkout
+      - restore_cache:
+          key: npm-v2-dependencies-{{ checksum "yarn.lock" }}
+
       - run: yarn global add node-gyp && yarn install
+
+      - save_cache:
+          key: npm-v2-dependencies-{{ checksum "yarn.lock" }}
+          paths:
+            - ./node_modules
