@@ -1,6 +1,6 @@
 version: 2.1
 jobs:
-  yarn-build:
+  build:
     docker: 
       - image: cimg/node:14.10.1 # the primary container, where your job's commands are run
         auth:
@@ -11,7 +11,6 @@ jobs:
       - run: yarn global add node-gyp && yarn install
       - npm_cache_key: npm-v1-dependencies-{{ checksum "yarn.lock" }}
     workflows: 
-    version: 2
     yarn-build:
       jobs:
-        - yarn-build
+        - build
