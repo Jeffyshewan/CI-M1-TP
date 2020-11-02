@@ -4,7 +4,9 @@ workflows:
   std:
     jobs:
       - yarn1
-      - lint
+      - lint:
+          requires:
+            - yarn1
 
 jobs:
   yarn1:
