@@ -12,8 +12,12 @@ workflows:
             - yarn
       - e2e-test:
           requires:
+            - yarn
+      - build:
+          requires:
             - lint
             - test
+            - e2e-test
 
 jobs:
   yarn:
@@ -83,3 +87,15 @@ jobs:
           key: npm-v2-dependencies-{{ checksum "yarn.lock" }}
           paths:
             - ./node_modules
+  
+  build:
+    environment: 
+      IMAGE_NAME: jeffyshewan/build-on-ci
+    docker:
+      - image: "circleci/buildpack-deps:stretch"
+    steps: 
+      - checkout
+      - setup_remote_docker
+      - run: 
+          name: Build and publish on DockerHub
+          command: docker build -t $IMAGE_NAME:latest .
